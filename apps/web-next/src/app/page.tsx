@@ -3,11 +3,14 @@ import Image from 'next/image';
 import BackgroundImage from 'public/background.jpg';
 import LogoText from 'public/logo-text.svg';
 
-import { HomeMenu } from './_components';
+import { ConnectButton, HomeMenu } from './_components';
 
 const Home = () => {
   return (
     <div className='relative'>
+      <div className='absolute top-8 right-8 z-[3]'>
+        <ConnectButton />
+      </div>
       <div className='absolute top-0 right-0 z-[2] flex h-screen w-full max-w-md flex-col items-start justify-evenly'>
         <Image
           alt='Logo Text'

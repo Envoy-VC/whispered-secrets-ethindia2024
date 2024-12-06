@@ -1,7 +1,7 @@
 import '@repo/ui/globals.css';
 import { GeistSans } from 'geist/font/sans';
 import { type Metadata } from 'next';
-import { ConvexClientProvider } from '~/providers';
+import { ConvexClientProvider, Web3Provider } from '~/providers';
 import '~/styles/globals.css';
 import { TRPCReactProvider } from '~/trpc/react';
 
@@ -16,7 +16,9 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
     <html className={GeistSans.variable} lang='en'>
       <body>
         <ConvexClientProvider>
-          <TRPCReactProvider>{children}</TRPCReactProvider>
+          <Web3Provider>
+            <TRPCReactProvider>{children}</TRPCReactProvider>
+          </Web3Provider>
         </ConvexClientProvider>
       </body>
     </html>
