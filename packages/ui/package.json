@@ -1,0 +1,63 @@
+{
+  "name": "@repo/ui",
+  "version": "0.0.1",
+  "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "author": "",
+  "exports": {
+    "./globals.css": "./src/styles/globals.css",
+    "./postcss.config": "./postcss.config.mjs",
+    "./tailwind.config": "./tailwind.config.ts",
+    "./lib/*": "./src/lib/*.ts",
+    "./hooks/*": [
+      "./src/hooks/*.ts",
+      "./src/hooks/*.tsx"
+    ],
+    "./components/*": "./src/components/*.tsx",
+    "./ui/*": "./src/components/ui/*.tsx"
+  },
+  "scripts": {
+    "format": "prettier . --write --cache"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.9.1",
+    "@radix-ui/react-dialog": "^1.1.2",
+    "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-scroll-area": "^1.2.1",
+    "@radix-ui/react-select": "^2.1.2",
+    "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-tooltip": "^1.1.4",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.461.0",
+    "next-themes": "^0.4.3",
+    "react-hook-form": "^7.53.2",
+    "sonner": "^1.7.0",
+    "tailwind-merge": "^2.5.5",
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@envoy1084/style-guide": "^0.1.1",
+    "@eslint/js": "^9.14.0",
+    "@tailwindcss/postcss": "4.0.0-beta.4",
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "@types/node": "^18",
+    "@types/react": "^18",
+    "@typescript-eslint/parser": "^8.11.0",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.13.0",
+    "jiti": "^2.4.0",
+    "postcss": "^8.4.49",
+    "postcss-load-config": "^6.0.1",
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.9",
+    "tailwindcss": "4.0.0-beta.4",
+    "typescript": "5.6.3",
+    "typescript-eslint": "^8.11.0"
+  },
+  "peerDependencies": {
+    "react": "^18"
+  }
+}
