@@ -84,3 +84,7 @@
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+.shadow-solid {
+  text-shadow: 0 0.1em 0 rgba(0, 0, 0, 0.5);
+}
