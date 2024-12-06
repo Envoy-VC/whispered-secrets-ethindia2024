@@ -42,6 +42,7 @@ type HomeMenuItem = (typeof homeMenuItems)[number]['key'];
 
 export const HomeMenu = () => {
   const [hovered, setHovered] = useState<HomeMenuItem | null>(null);
+
   return (
     <div className='flex w-full max-w-xs flex-col items-end gap-3'>
       {homeMenuItems.map((item) => {

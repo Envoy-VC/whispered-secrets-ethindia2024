@@ -71,7 +71,10 @@ export default [
     files: ['*.js?(x)', '*.mjs'],
   },
   {
-    files: ['*.config.{mjs,ts,cjs,js,ts}', 'src/app/**/page.tsx'],
+    files: [
+      '*.config.{mjs,ts,cjs,js,ts}',
+      'src/app/**/{page,layout,template}.tsx',
+    ],
     rules: {
       'import/no-default-export': 'off',
       'import/prefer-default-export': ['off', { target: 'any' }],
