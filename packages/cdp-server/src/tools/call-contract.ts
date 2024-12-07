@@ -4,8 +4,6 @@ import { Wallet } from "@coinbase/coinbase-sdk";
 import { ExtractAbiFunctionNames } from "abitype";
 import { erc20Abi } from "abitype/abis";
 
-import { Abi } from "abitype/zod";
-
 type Result = ExtractAbiFunctionNames<
   typeof erc20Abi,
   "payable" | "nonpayable"
@@ -16,19 +14,17 @@ const CallContractInputs = z
     contractAddress: z
       .string()
       .describe("The address of the contract to call. e.g. `0x1234...`"),
-    abi: Abi,
     method: z
       .string()
       .describe(
         "The method to call on the contract. e.g. `transfer(address to, uint256 amount)`",
       ),
-    amount: z
-      .bigint()
-      .optional()
-      .describe(
-        "The amount to send in wei with the transaction. e.g. `1000000000000000000`",
-      ),
-    args: z.object({}).describe("The arguments to pass to the method"),
+    args: z
+      .object({
+        gameId: z.string(),
+        userId: z.string(),
+      })
+      .describe("the gameId and userId to pass to the contract function"),
   })
   .strip()
   .describe("Instructions for signing a blockchain message");
@@ -37,14 +33,61 @@ export async function callContract(
   wallet: Wallet,
   args: z.infer<typeof CallContractInputs>,
 ): Promise<string> {
-  const payloadSignature = await wallet.invokeContract({
+  console.log("args", args);
+  const res = await wallet.invokeContract({
     contractAddress: args.contractAddress,
-    abi: args.abi,
+    abi: [
+      { type: "constructor", inputs: [], stateMutability: "nonpayable" },
+      {
+        type: "function",
+        name: "vote",
+        inputs: [
+          { name: "gameId", type: "string", internalType: "string" },
+          { name: "userId", type: "string", internalType: "string" },
+        ],
+        outputs: [],
+        stateMutability: "nonpayable",
+      },
+      {
+        type: "function",
+        name: "votes",
+        inputs: [
+          { name: "", type: "string", internalType: "string" },
+          { name: "", type: "uint256", internalType: "uint256" },
+        ],
+        outputs: [{ name: "", type: "string", internalType: "string" }],
+        stateMutability: "view",
+      },
+      {
+        type: "event",
+        name: "VoteForKiller",
+        inputs: [
+          {
+            name: "gameId",
+            type: "string",
+            indexed: false,
+            internalType: "string",
+          },
+          {
+            name: "userId",
+            type: "string",
+            indexed: false,
+            internalType: "string",
+          },
+        ],
+        anonymous: false,
+      },
+    ],
     method: args.method,
-    amount: args.amount,
     args: args.args,
   });
-  return `The payload signature ${payloadSignature}`;
+  const tx = await res.broadcast();
+
+  const hash = tx.getTransactionHash();
+  if (!hash) {
+    throw new Error("Failed to broadcast transaction");
+  }
+  return hash;
 }
 
 export const callContractConfig = {

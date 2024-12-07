@@ -33,3 +33,58 @@ declare module 'wagmi' {
     config: typeof config;
   }
 }
+
+const abi = [
+  { type: 'constructor', inputs: [], stateMutability: 'nonpayable' },
+  {
+    type: 'function',
+    name: 'getVotes',
+    inputs: [{ name: 'gameId', type: 'string', internalType: 'string' }],
+    outputs: [{ name: '', type: 'string[]', internalType: 'string[]' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'vote',
+    inputs: [
+      { name: 'gameId', type: 'string', internalType: 'string' },
+      { name: 'userId', type: 'string', internalType: 'string' },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'votes',
+    inputs: [
+      { name: '', type: 'string', internalType: 'string' },
+      { name: '', type: 'uint256', internalType: 'uint256' },
+    ],
+    outputs: [{ name: '', type: 'string', internalType: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'event',
+    name: 'VoteForKiller',
+    inputs: [
+      {
+        name: 'gameId',
+        type: 'string',
+        indexed: false,
+        internalType: 'string',
+      },
+      {
+        name: 'userId',
+        type: 'string',
+        indexed: false,
+        internalType: 'string',
+      },
+    ],
+    anonymous: false,
+  },
+] as const;
+
+export const whisperedConfig = {
+  address: '0x9482e4c7927ba4e1AcB319321FC6b23E18FDf49C' as `0x${string}`,
+  abi,
+};

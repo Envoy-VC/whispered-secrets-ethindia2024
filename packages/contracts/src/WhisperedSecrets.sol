@@ -13,4 +13,8 @@ contract WhisperedSecrets {
         votes[gameId].push(userId);
         emit VoteForKiller(gameId, userId);
     }
+
+    function getVotes(string memory gameId) public view returns (string[] memory) {
+        return votes[gameId];
+    }
 }

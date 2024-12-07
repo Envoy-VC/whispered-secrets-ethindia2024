@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { generateNextMessage } from '~/lib/ai/generate-completion';
+import { invokeContract } from '~/lib/cdp';
 import { cn } from '~/lib/utils';
 
 import { GameButton } from '@repo/ui/components/ui/game-button';
@@ -10,7 +11,6 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from '@repo/ui/ui/sheet';
 import { useMutation, useQuery } from 'convex/react';
 import type { NPC } from '~/types';
@@ -30,7 +30,6 @@ const ChatBox = ({ me, others, isOpen, setOpen, gameId }: ChatBoxProps) => {
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
   return (
     <Sheet open={isOpen} onOpenChange={setOpen}>
-      <SheetTrigger>Open</SheetTrigger>
       <SheetContent className='font-body !w-[40dvw] !rounded-none border-[10px] border-[rgb(23,20,33)] bg-[rgb(35,38,58)] text-neutral-100'>
         <SheetHeader>
           <SheetTitle>Chat with other Suspects</SheetTitle>
@@ -87,6 +86,8 @@ const ChatContainer = ({
 
   const mutation = useMutation(api.chat.sendChat);
   const mutationCallback = useMutation(api.chat.npcCallback);
+
+  const [invoking, setInvoking] = useState<boolean>(false);
 
   const onSend = async () => {
     const res = await mutation({
@@ -151,7 +152,26 @@ const ChatContainer = ({
         />
         <div className='flex flex-row items-center gap-2'>
           <GameButton onClick={onSend}>Send</GameButton>
-          <GameButton>Invoke</GameButton>
+          <GameButton
+            onClick={async () => {
+              try {
+                setInvoking(true);
+                const res = await invokeContract(gameId, npcId);
+                console.log(res);
+                if (res.status === 'success') {
+                  // eslint-disable-next-line no-alert -- need this
+                  alert('Contract invoked successfully');
+                }
+              } catch (error: unknown) {
+                console.error(error);
+                setInvoking(false);
+              } finally {
+                setInvoking(false);
+              }
+            }}
+          >
+            {invoking ? 'Invoking...' : 'Invoke'}
+          </GameButton>
         </div>
       </div>
     </div>
@@ -159,5 +179,3 @@ const ChatContainer = ({
 };
 
 export default ChatBox;
-
-// are you the killer?

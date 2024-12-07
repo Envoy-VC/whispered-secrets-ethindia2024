@@ -9,6 +9,8 @@ import { Game } from '~/game/map';
 import { api } from '../../convex/_generated/api';
 import type { Id } from '../../convex/_generated/dataModel';
 import ChatBox from './$components/chat-box';
+import { GameInfo } from './$components/game-info';
+import Scores from './$components/scores';
 
 const GameComponent = () => {
   const { gameId } = useParams({
@@ -16,6 +18,7 @@ const GameComponent = () => {
   });
 
   const [showChat, setShowChat] = useState<boolean>(false);
+  const [showInfo, setShowInfo] = useState<boolean>(false);
 
   const { address } = useAccount();
 
@@ -40,7 +43,7 @@ const GameComponent = () => {
     return (
       <>
         <div className='relative'>
-          <div className='absolute top-4 right-4'>
+          <div className='absolute top-8 right-4'>
             <GameButton
               imgUrl='/assets/ui/bubble-left.svg'
               onClick={() => {
@@ -50,7 +53,16 @@ const GameComponent = () => {
               Chat
             </GameButton>
           </div>
-
+          <div className='absolute top-8 left-4'>
+            <GameButton
+              onClick={() => {
+                setShowInfo((p) => !p);
+              }}
+            >
+              Game Info
+            </GameButton>
+          </div>
+          {game ? <Scores game={game} /> : null}
           <Game me={me} others={others} showChat={showChat} />
         </div>
 
@@ -62,6 +74,9 @@ const GameComponent = () => {
             others={others}
             setOpen={setShowChat}
           />
+        ) : null}
+        {showInfo && game ? (
+          <GameInfo game={game} isOpen={showInfo} setOpen={setShowInfo} />
         ) : null}
       </>
     );
