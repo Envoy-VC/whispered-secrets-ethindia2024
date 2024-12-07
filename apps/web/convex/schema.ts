@@ -1,18 +1,18 @@
 import { defineSchema, defineTable } from 'convex/server';
 import { v } from 'convex/values';
 
-const playerDetails = v.object({
+export const playerDetails = v.object({
+  id: v.string(),
   playerName: v.string(),
   identity: v.optional(v.string()),
   plan: v.optional(v.string()),
   relationWithVictim: v.optional(v.string()),
 });
 
-const gameDetails = v.object({
+export const gameDetails = v.object({
   plot: v.string(),
   players: v.array(playerDetails),
   killer: playerDetails,
-  victim: playerDetails,
   murderWeapon: v.string(),
   murderLocation: v.string(),
 });
@@ -20,17 +20,11 @@ const gameDetails = v.object({
 const schema = defineSchema(
   {
     users: defineTable({
-      id: v.string(),
-      is_human: v.boolean(),
-      address: v.optional(v.string()),
-      name: v.string(),
-      character: v.string(),
-      identity: v.string(),
-      plan: v.string(),
-    }).index('id', ['id']),
+      address: v.string(),
+    }).index('address', ['address']),
     games: defineTable({
       id: v.string(),
-      players: v.array(v.id('players')),
+      players: v.array(v.id('users')),
       details: gameDetails,
     }).index('id', ['id']),
     conversations: defineTable({

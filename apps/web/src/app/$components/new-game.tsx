@@ -16,8 +16,11 @@ import {
   DialogHeader,
   DialogTrigger,
 } from '@repo/ui/ui/dialog';
+import { useMutation } from 'convex/react';
 import retry from 'p-retry';
 import BulletLogo from 'public/bullet.png';
+
+import { api } from '../../../convex/_generated/api';
 
 type GameGenerationStatus =
   | 'idle'
@@ -47,6 +50,8 @@ const NewGame = () => {
   const [murderWeapon, setMurderWeapon] = useState<string | null>(null);
   const [murderLocation, setMurderLocation] = useState<string | null>(null);
 
+  const mutate = useMutation(api.games.createGame);
+
   const onOpenChange = (open: boolean) => {
     setOpen(open);
     setStatus('idle');
@@ -59,6 +64,7 @@ const NewGame = () => {
   const onGenerateGame = async () => {
     try {
       setOpen(open);
+      console.log('Generating game');
       const reader = generatePlot();
       setStatus('generating-plot');
       let isStreaming = true;
@@ -110,6 +116,36 @@ const NewGame = () => {
       setStatus('complete');
     } catch (error) {
       setStatus('idle');
+      console.error(error);
+    }
+  };
+
+  const onCreateGame = async () => {
+    if (status !== 'complete') {
+      return;
+    }
+
+    if (
+      !players.length ||
+      !plot ||
+      !killer ||
+      !murderWeapon ||
+      !murderLocation
+    ) {
+      return;
+    }
+
+    try {
+      const res = await mutate({
+        players,
+        plot,
+        killer,
+        murderWeapon,
+        murderLocation,
+      });
+
+      console.log(res);
+    } catch (error) {
       console.error(error);
     }
   };
@@ -196,7 +232,9 @@ const NewGame = () => {
               </div>
             )}
             <div className='mx-auto w-fit py-6'>
-              {status === 'complete' && <GameButton>Start Game</GameButton>}
+              {status === 'complete' && (
+                <GameButton onClick={onCreateGame}>Start Game</GameButton>
+              )}
             </div>
           </DialogDescription>
         </DialogHeader>

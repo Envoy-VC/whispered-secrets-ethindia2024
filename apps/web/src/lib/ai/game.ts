@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { model } from './config';
 
 const playerSchema = z.object({
-  playerName: z.string().describe('Player name in the game').optional(),
+  playerName: z.string().describe('Player name in the game'),
   identity: z.string().optional().describe('Player identity'),
   plan: z.string().optional().describe('Player Plan in the entire game'),
   relationWithVictim: z
@@ -47,7 +47,7 @@ export const generateKillerDetails = async (
   const prompt = `You are a mystery writer. You need to choose a killer for a murder mystery game from list of players. The plot of the game is: ${plot}. The players in the game are: ${players
     .map(
       (p) => `
-        ${p.playerName ?? ''}: \n\nPlan: ${p.plan ?? ''}\n\nRelation with victim: ${p.relationWithVictim ?? ''}\n\nIdentity: ${p.identity ?? ''}\n\n
+        ${p.playerName}: \n\nPlan: ${p.plan ?? ''}\n\nRelation with victim: ${p.relationWithVictim ?? ''}\n\nIdentity: ${p.identity ?? ''}\n\n
       `
     )
     .join('\n')}. Also generate the murder weapon and location for the game.`;
