@@ -8,7 +8,7 @@ import { clsx } from 'clsx';
 export const GameButton = (props: {
   className?: string;
   href?: string;
-  imgUrl?: string;
+  imgUrl?: string | ReactNode;
   onClick?: MouseEventHandler;
   title?: string;
   children?: ReactNode;
@@ -25,12 +25,15 @@ export const GameButton = (props: {
     >
       <div className='inline-block bg-[#3A4466]'>
         <div className='inline-flex h-full items-center gap-4'>
-          {props.imgUrl ? (
+          {props.imgUrl && typeof props.imgUrl === 'string' ? (
             <img
               className='h-4 w-4 sm:h-[30px] sm:w-[30px]'
               src={props.imgUrl}
             />
           ) : null}
+          {props.imgUrl && typeof props.imgUrl !== 'string'
+            ? props.imgUrl
+            : null}
           {props.children}
         </div>
       </div>

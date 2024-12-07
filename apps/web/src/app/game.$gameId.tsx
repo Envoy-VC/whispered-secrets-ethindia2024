@@ -10,6 +10,7 @@ import { api } from '../../convex/_generated/api';
 import type { Id } from '../../convex/_generated/dataModel';
 import ChatBox from './$components/chat-box';
 import { GameInfo } from './$components/game-info';
+import Huddle01Controls from './$components/huddle01-controls';
 import Scores from './$components/scores';
 
 const GameComponent = () => {
@@ -75,6 +76,7 @@ const GameComponent = () => {
             setOpen={setShowChat}
           />
         ) : null}
+        {game ? <Huddle01Controls game={game} /> : null}
         {showInfo && game ? (
           <GameInfo game={game} isOpen={showInfo} setOpen={setShowInfo} />
         ) : null}

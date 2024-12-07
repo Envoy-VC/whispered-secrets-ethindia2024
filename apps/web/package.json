@@ -22,6 +22,7 @@
     "connectkit": "^1.8.2",
     "convex": "^1.17.3",
     "grid-engine": "^2.46.0",
+    "lucide-react": "^0.461.0",
     "ollama-ai-provider": "^1.1.0",
     "p-retry": "^6.2.1",
     "phaser": "3.87.0",
