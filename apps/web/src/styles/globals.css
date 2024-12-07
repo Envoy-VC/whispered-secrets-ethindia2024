@@ -1,5 +1,23 @@
 @import 'tailwindcss';
 
+@font-face {
+  font-family: 'Upheaval Pro';
+  src: url(../../public/fonts/upheaval_pro.ttf);
+}
+
+@font-face {
+  font-family: 'VCR OSD Mono';
+  src: url(../../public/fonts/vcr_osd_mono.ttf);
+}
+
+.font-display {
+  font-family: 'Upheaval Pro', 'sans-serif';
+}
+
+.font-body {
+  font-family: 'VCR OSD Mono', 'monospace';
+}
+
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
   so we've added these compatibility styles to make sure everything still

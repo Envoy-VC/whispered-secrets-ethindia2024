@@ -24,17 +24,15 @@ export const GameButton = (props: {
       onClick={props.onClick}
     >
       <div className='inline-block bg-[#3A4466]'>
-        <span>
-          <div className='inline-flex h-full items-center gap-4'>
-            {props.imgUrl ? (
-              <img
-                className='h-4 w-4 sm:h-[30px] sm:w-[30px]'
-                src={props.imgUrl}
-              />
-            ) : null}
-            {props.children}
-          </div>
-        </span>
+        <div className='inline-flex h-full items-center gap-4'>
+          {props.imgUrl ? (
+            <img
+              className='h-4 w-4 sm:h-[30px] sm:w-[30px]'
+              src={props.imgUrl}
+            />
+          ) : null}
+          {props.children}
+        </div>
       </div>
     </a>
   );

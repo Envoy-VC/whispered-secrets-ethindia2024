@@ -5,6 +5,10 @@ export default {
   content: ['./index.html', './src/**/*.{ts,tsx,js,jsx,md,mdx}'],
   theme: {
     extend: {
+      fontFamily: {
+        upheaval: ['Upheaval Pro', 'sans-serif'],
+        mono: ['VCR OSD Mono', 'sans-serif'],
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
