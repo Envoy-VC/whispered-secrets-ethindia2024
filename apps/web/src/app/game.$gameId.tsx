@@ -51,7 +51,7 @@ const GameComponent = () => {
             </GameButton>
           </div>
 
-          <Game me={me} others={others} />
+          <Game me={me} others={others} showChat={showChat} />
         </div>
 
         {showChat ? (

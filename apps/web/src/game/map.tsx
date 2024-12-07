@@ -11,9 +11,10 @@ import { type PhaserWithGridEngine, config } from './config';
 interface GameProps {
   me: NPC;
   others: NPC[];
+  showChat: boolean;
 }
 
-export const Game = ({ me, others }: GameProps) => {
+export const Game = ({ me, others, showChat }: GameProps) => {
   const gameContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -106,6 +107,12 @@ export const Game = ({ me, others }: GameProps) => {
 
     function update(this: PhaserWithGridEngine) {
       const cursors = this.input.keyboard?.createCursorKeys();
+      this.input.keyboard?.enableGlobalCapture();
+      if (showChat) {
+        this.input.keyboard?.disableGlobalCapture();
+        return;
+      }
+
       if (cursors) {
         if (cursors.left.isDown) {
           this.gridEngine?.move('me', Direction.LEFT);
@@ -115,6 +122,8 @@ export const Game = ({ me, others }: GameProps) => {
           this.gridEngine?.move('me', Direction.UP);
         } else if (cursors.down.isDown) {
           this.gridEngine?.move('me', Direction.DOWN);
+        } else {
+          this.gridEngine?.clearEnqueuedMovements('me');
         }
       }
     }
@@ -122,7 +131,7 @@ export const Game = ({ me, others }: GameProps) => {
     return () => {
       game.destroy(true);
     };
-  }, [me.npcName, others]);
+  }, [me.npcName, others, showChat]);
 
   return <div ref={gameContainerRef} className='h-screen w-full' />;
 };

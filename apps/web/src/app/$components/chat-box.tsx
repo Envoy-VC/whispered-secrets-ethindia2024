@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { generateNextMessage } from '~/lib/ai/generate-completion';
 import { cn } from '~/lib/utils';
 
 import { GameButton } from '@repo/ui/components/ui/game-button';
@@ -85,15 +86,32 @@ const ChatContainer = ({
   });
 
   const mutation = useMutation(api.chat.sendChat);
+  const mutationCallback = useMutation(api.chat.npcCallback);
 
   const onSend = async () => {
-    await mutation({
+    const res = await mutation({
       gameId: gameId as Id<'games'>,
       playerId,
       npcId,
       message,
     });
     setMessage('');
+
+    if (typeof res === 'object' && res) {
+      console.log('Waiting for response');
+      const message = await generateNextMessage(
+        res.game,
+        res.messages,
+        res.npcId
+      );
+      console.log('Message:', message);
+      await mutationCallback({
+        content: message ?? '',
+        gameId: gameId as Id<'games'>,
+        conversationId: res.conversationId,
+        playerNPCId: playerId,
+      });
+    }
   };
   return (
     <div className='hide-scrollbar flex h-[80dvh] flex-col justify-between gap-2 overflow-y-scroll'>
@@ -141,3 +159,5 @@ const ChatContainer = ({
 };
 
 export default ChatBox;
+
+// are you the killer?

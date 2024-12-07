@@ -58,12 +58,21 @@ export const sendChat = mutation({
     });
 
     if (!isHuman) {
-      // TODO: Make AI Response
-      await ctx.db.insert('messages', {
-        npc_id: playerId,
-        conversation_id: conversation,
-        content: 'Hello Back response',
+      const chats = await getChats(ctx, { gameId, ids: [npcId, playerId] });
+      const messages: { role: 'system' | 'user'; content: string }[] = [];
+      chats?.forEach((chat) => {
+        messages.push({
+          role: chat.npc_id === npcId ? 'system' : 'user',
+          content: chat.content,
+        });
       });
+
+      return {
+        game,
+        messages,
+        npcId,
+        conversationId: conversation,
+      };
     }
 
     return messages;
@@ -99,5 +108,21 @@ export const getOrCreateConversation = mutation({
       return conversation;
     }
     return conversation[0]._id;
+  },
+});
+
+export const npcCallback = mutation({
+  args: {
+    gameId: v.id('games'),
+    conversationId: v.id('conversations'),
+    playerNPCId: v.string(),
+    content: v.string(),
+  },
+  handler: async (ctx, { playerNPCId, conversationId, content }) => {
+    await ctx.db.insert('messages', {
+      npc_id: playerNPCId,
+      conversation_id: conversationId,
+      content,
+    });
   },
 });
