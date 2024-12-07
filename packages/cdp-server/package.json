@@ -7,6 +7,7 @@
     "@coinbase/cdp-agentkit-core": "^0.0.7",
     "@coinbase/cdp-langchain": "^0.0.8",
     "@coinbase/coinbase-sdk": "^0.11.2",
+    "@langchain/core": "^0.3.22",
     "@langchain/langgraph": "^0.2.27",
     "@langchain/xai": "^0.0.1",
     "@types/node": "^22.10.1",

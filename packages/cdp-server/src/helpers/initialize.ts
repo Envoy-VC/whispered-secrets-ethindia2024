@@ -12,7 +12,7 @@ dotenv.config();
 
 const WALLET_DATA_FILE = "wallet_data.txt";
 
-async function initializeAgent() {
+export async function initializeAgent() {
   const llm = new ChatXAI({
     apiKey: process.env.XAI_PK,
   });
