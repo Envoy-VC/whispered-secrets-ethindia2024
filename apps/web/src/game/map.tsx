@@ -90,8 +90,8 @@ export const Game = ({ me, others }: GameProps) => {
             walkingAnimationMapping: Math.floor(Math.random() * 4 + 2),
             walkingAnimationEnabled: true,
             startPosition: {
-              x: Math.floor(Math.random() * 10 + 2),
-              y: Math.floor(Math.random() * 10 + 2),
+              x: 13,
+              y: 8,
             },
           })),
         ],
