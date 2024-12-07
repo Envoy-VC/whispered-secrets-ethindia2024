@@ -1,19 +1,20 @@
 import { CdpAgentkit } from "@coinbase/cdp-agentkit-core";
-import { CdpToolkit } from "@coinbase/cdp-langchain";
+import { CdpTool, CdpToolkit } from "@coinbase/cdp-langchain";
 import { MemorySaver } from "@langchain/langgraph";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
-import { ChatOpenAI } from "@langchain/openai";
+import { ChatXAI } from "@langchain/xai";
 import * as dotenv from "dotenv";
 import * as fs from "fs";
+import { signMessageConfig } from "../tools/sign-message";
+import { callContractConfig } from "../tools";
 
 dotenv.config();
 
 const WALLET_DATA_FILE = "wallet_data.txt";
 
 async function initializeAgent() {
-  ``;
-  const llm = new ChatOpenAI({
-    model: "gpt-4o-mini",
+  const llm = new ChatXAI({
+    apiKey: process.env.XAI_PK,
   });
 
   let walletDataStr: string | null = null;
@@ -26,26 +27,27 @@ async function initializeAgent() {
     }
   }
 
-  // Configure CDP AgentKit
   const config = {
     cdpWalletData: walletDataStr || undefined,
     networkId: process.env.NETWORK_ID || "base-sepolia",
   };
 
-  // Initialize CDP AgentKit
   const agentkit = await CdpAgentkit.configureWithWallet(config);
 
-  // Initialize CDP AgentKit Toolkit and get tools
   const cdpToolkit = new CdpToolkit(agentkit);
   const tools = cdpToolkit.getTools();
 
-  // Store buffered conversation history in memory
+  const signatureTool = new CdpTool(signMessageConfig, agentkit);
+  const contractCallTool = new CdpTool(callContractConfig, agentkit);
+
+  tools.push(signatureTool);
+  tools.push(contractCallTool);
+
   const memory = new MemorySaver();
   const agentConfig = {
     configurable: { thread_id: "CDP AgentKit Chatbot Example!" },
   };
 
-  // Create React Agent using the LLM and CDP AgentKit tools
   const agent = createReactAgent({
     llm,
     tools,
@@ -54,11 +56,8 @@ async function initializeAgent() {
       "You are a helpful agent that can interact onchain using the Coinbase Developer Platform AgentKit...",
   });
 
-  // Save wallet data
   const exportedWallet = await agentkit.exportWallet();
   fs.writeFileSync(WALLET_DATA_FILE, exportedWallet);
 
   return { agent, config: agentConfig };
 }
-
-initializeAgent();

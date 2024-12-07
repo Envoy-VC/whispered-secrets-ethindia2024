@@ -56,8 +56,8 @@ const GameComponent = () => {
 
         {showChat ? (
           <ChatBox
-            isOpen={showChat}
             gameId={gameId}
+            isOpen={showChat}
             me={me}
             others={others}
             setOpen={setShowChat}

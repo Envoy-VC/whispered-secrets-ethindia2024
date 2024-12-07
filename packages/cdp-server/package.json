@@ -6,13 +6,15 @@
   "dependencies": {
     "@coinbase/cdp-agentkit-core": "^0.0.7",
     "@coinbase/cdp-langchain": "^0.0.8",
+    "@coinbase/coinbase-sdk": "^0.11.2",
     "@langchain/langgraph": "^0.2.27",
-    "@langchain/ollama": "^0.1.2",
-    "@langchain/openai": "^0.3.14",
+    "@langchain/xai": "^0.0.1",
     "@types/node": "^22.10.1",
+    "abitype": "^1.0.7",
     "dotenv": "^16.4.7",
     "hono": "^4.6.13",
-    "langchain": "^0.3.6"
+    "langchain": "^0.3.6",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/bun": "latest"
