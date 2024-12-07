@@ -1,5 +1,6 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
+import { GameButton } from '@repo/ui/components/ui/game-button';
 import { createFileRoute, useParams } from '@tanstack/react-router';
 import { useQuery } from 'convex/react';
 import { useAccount } from 'wagmi';
@@ -7,11 +8,14 @@ import { Game } from '~/game/map';
 
 import { api } from '../../convex/_generated/api';
 import type { Id } from '../../convex/_generated/dataModel';
+import ChatBox from './$components/chat-box';
 
 const GameComponent = () => {
   const { gameId } = useParams({
     from: '/game/$gameId',
   });
+
+  const [showChat, setShowChat] = useState<boolean>(false);
 
   const { address } = useAccount();
 
@@ -32,7 +36,35 @@ const GameComponent = () => {
     // eslint-disable-next-line @tanstack/query/no-unstable-deps -- need this
   }, [game?.details.npcs, game?.details.players, user]);
 
-  if (me && others) return <Game me={me} others={others} />;
+  if (me && others)
+    return (
+      <>
+        <div className='relative'>
+          <div className='absolute top-4 right-4'>
+            <GameButton
+              imgUrl='/assets/ui/bubble-left.svg'
+              onClick={() => {
+                setShowChat((p) => !p);
+              }}
+            >
+              Chat
+            </GameButton>
+          </div>
+
+          <Game me={me} others={others} />
+        </div>
+
+        {showChat ? (
+          <ChatBox
+            isOpen={showChat}
+            gameId={gameId}
+            me={me}
+            others={others}
+            setOpen={setShowChat}
+          />
+        ) : null}
+      </>
+    );
 };
 
 export const Route = createFileRoute('/game/$gameId')({

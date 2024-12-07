@@ -2,14 +2,11 @@
 
 import { useEffect, useRef } from 'react';
 
-import type { Infer } from 'convex/values';
 import { Direction } from 'grid-engine';
 import Phaser from 'phaser';
+import type { NPC } from '~/types';
 
-import type { npcDetails } from '../../convex/schema';
 import { type PhaserWithGridEngine, config } from './config';
-
-type NPC = Infer<typeof npcDetails>;
 
 interface GameProps {
   me: NPC;

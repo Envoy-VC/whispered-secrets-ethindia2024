@@ -1,3 +1,6 @@
+import { type npcDetails } from 'convex/schema';
+import { type Infer } from 'convex/values';
+
 import type { Doc, Id } from '../../convex/_generated/dataModel';
 
 export interface AnimatedSprite {
@@ -26,3 +29,5 @@ export interface WorldMap {
 
 export type GameId = Id<'games'>;
 export type ServerGame = Doc<'games'>;
+
+export type NPC = Infer<typeof npcDetails>;
