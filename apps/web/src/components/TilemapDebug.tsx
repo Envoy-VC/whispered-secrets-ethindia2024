@@ -6,7 +6,7 @@ interface Props {
   tilemapLayer: Phaser.Tilemaps.TilemapLayer;
 }
 
-export function TilemapDebug(props: Props) {
+export const TilemapDebug = (props: Props) => {
   const scene = useScene();
   let isDebug = false;
   let graphics: Phaser.GameObjects.Graphics;
@@ -39,4 +39,4 @@ export function TilemapDebug(props: Props) {
       }}
     />
   );
-}
+};

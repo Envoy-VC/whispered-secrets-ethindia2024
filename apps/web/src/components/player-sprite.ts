@@ -1,3 +1,8 @@
+/* eslint-disable @eslint-community/eslint-comments/disable-enable-pair -- safe */
+
+/* eslint-disable @typescript-eslint/no-non-null-assertion -- safe */
+
+/* eslint-disable @typescript-eslint/switch-exhaustiveness-check -- safe */
 import Phaser from 'phaser';
 
 import { key } from '../constants';
@@ -20,7 +25,7 @@ const Velocity = {
 } as const;
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
-  body!: Phaser.Physics.Arcade.Body;
+  declare body: Phaser.Physics.Arcade.Body;
   cursors: Cursors;
   selector: Phaser.Physics.Arcade.StaticBody;
 
@@ -32,37 +37,21 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     frame = 'misa-front'
   ) {
     super(scene, x, y, texture, frame);
-
-    // Add the sprite to the scene
     scene.add.existing(this);
-
-    // Enable physics for the sprite
     scene.physics.world.enable(this);
-
-    // The image has a bit of whitespace so use setSize and
-    // setOffset to control the size of the player's body
     this.setSize(32, 42).setOffset(0, 22);
-
-    // Collide the sprite body with the world boundary
     this.setCollideWorldBounds(true);
 
-    // Set the camera to follow the game object
     scene.cameras.main.startFollow(this);
     scene.cameras.main.setZoom(1);
 
-    // Add cursor keys
     this.cursors = this.createCursorKeys();
 
-    // Create sprite animations
     this.createAnimations();
 
-    // Add selector
     this.selector = scene.physics.add.staticBody(x - 8, y + 32, 16, 16);
   }
 
-  /**
-   * Track the arrow keys & WASD.
-   */
   private createCursorKeys() {
     return this.scene.input.keyboard!.addKeys(
       'w,a,s,d,up,left,down,right,space'
@@ -72,7 +61,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   private createAnimations() {
     const anims = this.scene.anims;
 
-    // Create left animation
     if (!anims.exists(Animation.Left)) {
       anims.create({
         key: Animation.Left,
@@ -87,7 +75,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       });
     }
 
-    // Create right animation
     if (!anims.exists(Animation.Right)) {
       anims.create({
         key: Animation.Right,
@@ -102,7 +89,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       });
     }
 
-    // Create up animation
     if (!anims.exists(Animation.Up)) {
       anims.create({
         key: Animation.Up,
@@ -117,7 +103,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       });
     }
 
-    // Create down animation
     if (!anims.exists(Animation.Down)) {
       anims.create({
         key: Animation.Down,
@@ -163,10 +148,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     const { anims, body, cursors } = this;
     const prevVelocity = body.velocity.clone();
 
-    // Stop any previous movement from the last frame
     body.setVelocity(0);
 
-    // Horizontal movement
     switch (true) {
       case cursors.left.isDown:
       case cursors.a.isDown:
@@ -179,7 +162,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         break;
     }
 
-    // Vertical movement
     switch (true) {
       case cursors.up.isDown:
       case cursors.w.isDown:
@@ -192,10 +174,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         break;
     }
 
-    // Normalize and scale the velocity so that player can't move faster along a diagonal
     body.velocity.normalize().scale(Velocity.Horizontal);
 
-    // Update the animation last and give left/right animations precedence over up/down animations
     switch (true) {
       case cursors.left.isDown:
       case cursors.a.isDown:
@@ -223,8 +203,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
       default:
         anims.stop();
-
-        // If we were moving, pick an idle frame to use
         switch (true) {
           case prevVelocity.x < 0:
             this.setTexture(key.atlas.player, 'misa-left');

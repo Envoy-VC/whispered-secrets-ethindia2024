@@ -1,19 +1,20 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @eslint-community/eslint-comments/disable-enable-pair -- safe */
+
+/* eslint-disable @typescript-eslint/no-unsafe-assignment -- safe  */
+
+/* eslint-disable @typescript-eslint/no-unsafe-member-access -- safe */
+
+/* eslint-disable @typescript-eslint/no-non-null-assertion -- safe */
 import Phaser from 'phaser';
 import { render } from 'phaser-jsx';
 
-import { Player, TilemapDebug, Typewriter } from '../components';
-import {
-  Depth,
-  TILESET_NAME,
-  TilemapLayer,
-  TilemapObject,
-  key,
-} from '../constants';
+import { Player, Typewriter } from '../components';
+import { Depth, TILESET_NAME, TilemapLayer, key } from '../constants';
 
-const state = {
-  isTypewriting: false,
-};
+interface PlayerConfig {
+  x: number;
+  y: number;
+}
 
 interface Sign extends Phaser.Physics.Arcade.StaticBody {
   text?: string;
@@ -25,21 +26,20 @@ export class Main extends Phaser.Scene {
   private tilemap!: Phaser.Tilemaps.Tilemap;
   private worldLayer!: Phaser.Tilemaps.TilemapLayer;
 
-  constructor() {
+  constructor(players?: PlayerConfig[]) {
     super(key.scene.main);
+    for (const player of players ?? []) {
+      this.addPlayer(player);
+    }
   }
 
   create() {
     this.tilemap = this.make.tilemap({ key: key.tilemap.tuxemon });
-
-    // Parameters are the name you gave the tileset in Tiled and
-    // the key of the tileset image in Phaser's cache (name used in preload)
     const tileset = this.tilemap.addTilesetImage(
       TILESET_NAME,
       key.image.tuxemon
     )!;
 
-    // Parameters: layer name (or index) from Tiled, tileset, x, y
     this.tilemap.createLayer(TilemapLayer.BelowPlayer, tileset, 0, 0);
     this.worldLayer = this.tilemap.createLayer(
       TilemapLayer.World,
@@ -58,30 +58,15 @@ export class Main extends Phaser.Scene {
     this.physics.world.bounds.width = this.worldLayer.width;
     this.physics.world.bounds.height = this.worldLayer.height;
 
-    // By default, everything gets depth sorted on the screen in the order we created things.
-    // We want the "Above Player" layer to sit on top of the player, so we explicitly give it a depth.
-    // Higher depths will sit on top of lower depth objects.
     aboveLayer.setDepth(Depth.AbovePlayer);
 
     this.addPlayer();
 
-    // Set the bounds of the camera
     this.cameras.main.setBounds(
       0,
       0,
       this.tilemap.widthInPixels,
       this.tilemap.heightInPixels
-    );
-
-    render(<TilemapDebug tilemapLayer={this.worldLayer} />, this);
-
-    state.isTypewriting = true;
-    render(
-      <Typewriter
-        text='WASD or arrow keys to move.'
-        onEnd={() => (state.isTypewriting = false)}
-      />,
-      this
     );
 
     this.input.keyboard!.on('keydown-ESC', () => {
@@ -90,25 +75,25 @@ export class Main extends Phaser.Scene {
     });
   }
 
-  private addPlayer() {
-    // Object layers in Tiled let you embed extra info into a map like a spawn point or custom collision shapes.
-    // In the tmx file, there's an object layer with a point named 'Spawn Point'.
-    const spawnPoint = this.tilemap.findObject(
-      TilemapLayer.Objects,
-      ({ name }) => name === TilemapObject.SpawnPoint
-    )!;
+  private addPlayer(props?: PlayerConfig) {
+    if (props) {
+      this.player = new Player(this, props.x, props.y);
+    } else {
+      const spawnPoint = this.tilemap.findObject(
+        TilemapLayer.Objects,
+        ({ name }) => name === 'Spawn Point'
+      )!;
+      this.player = new Player(this, spawnPoint.x!, spawnPoint.y!);
+    }
 
-    this.player = new Player(this, spawnPoint.x!, spawnPoint.y!);
     this.addPlayerSignInteraction();
-
-    // Watch the player and worldLayer for collisions
     this.physics.add.collider(this.player, this.worldLayer);
   }
 
   private addPlayerSignInteraction() {
     const sign = this.tilemap.findObject(
       TilemapLayer.Objects,
-      ({ name }) => name === TilemapObject.Sign
+      ({ name }) => name === 'Sign'
     )!;
 
     this.sign = this.physics.add.staticBody(
@@ -125,16 +110,8 @@ export class Main extends Phaser.Scene {
       this.sign as unknown as ArcadeColliderType,
       this.player.selector as unknown as ArcadeColliderType,
       (sign) => {
-        if (this.player.cursors.space.isDown && !state.isTypewriting) {
-          state.isTypewriting = true;
-
-          render(
-            <Typewriter
-              text={(sign as unknown as Sign).text!}
-              onEnd={() => (state.isTypewriting = false)}
-            />,
-            this
-          );
+        if (this.player.cursors.space.isDown) {
+          render(<Typewriter text={(sign as unknown as Sign).text!} />, this);
         }
       },
       undefined,

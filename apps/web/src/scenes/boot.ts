@@ -9,17 +9,13 @@ export class Boot extends Scene {
   }
 
   preload() {
-    this.load.spritesheet(key.image.spaceman, assets.sprites.spaceman.src, {
+    this.load.spritesheet(key.image.spaceman, assets.sprites.spaceman, {
       frameWidth: 16,
       frameHeight: 16,
     });
-    this.load.image(key.image.tuxemon, assets.tilesets.tuxemon.src);
+    this.load.image(key.image.tuxemon, assets.tilesets.tuxemon);
     this.load.tilemapTiledJSON(key.tilemap.tuxemon, assets.tilemaps.tuxemon);
-    this.load.atlas(
-      key.atlas.player,
-      assets.atlas.image.src,
-      assets.atlas.data
-    );
+    this.load.atlas(key.atlas.player, assets.atlas.image, assets.atlas.data);
   }
 
   create() {

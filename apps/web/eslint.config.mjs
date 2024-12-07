@@ -1,8 +1,8 @@
 import eslintRecommendedConfig from '@envoy1084/style-guide/eslint/flat/_base';
-import eslintNextConfig from '@envoy1084/style-guide/eslint/flat/next';
 import eslintReactConfig from '@envoy1084/style-guide/eslint/flat/react';
 import eslintTypescriptConfig from '@envoy1084/style-guide/eslint/flat/typescript';
 import pluginQuery from '@tanstack/eslint-plugin-query';
+import pluginRouter from '@tanstack/eslint-plugin-router';
 import { configs } from 'typescript-eslint';
 
 // eslint-disable-next-line tsdoc/syntax -- for type safety
@@ -11,7 +11,7 @@ export default [
   ...eslintRecommendedConfig,
   ...eslintTypescriptConfig,
   ...eslintReactConfig,
-  ...eslintNextConfig,
+  ...pluginRouter.configs['flat/recommended'],
   ...pluginQuery.configs['flat/recommended'],
   ...configs.recommendedTypeChecked,
   {

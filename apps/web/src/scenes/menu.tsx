@@ -1,8 +1,3 @@
-/* eslint-disable @eslint-community/eslint-comments/disable-enable-pair -- safe  */
-
-/* eslint-disable @typescript-eslint/unbound-method -- safe  */
-
-/* eslint-disable @typescript-eslint/no-non-null-assertion -- safe  */
 import { Scene } from 'phaser';
 import { render } from 'phaser-jsx';
 
@@ -21,7 +16,8 @@ export class Menu extends Scene {
     render(
       <>
         <Overlay />
-        <PhasorButton center fixed x={centerX} y={centerY} onClick={this.exit}>
+
+        <PhasorButton center fixed onClick={this.exit} x={centerX} y={centerY}>
           Resume
         </PhasorButton>
       </>,

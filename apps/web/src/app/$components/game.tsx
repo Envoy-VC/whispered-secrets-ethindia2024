@@ -15,13 +15,10 @@ export const PhaserGame: React.FC = () => {
     }
 
     gameRef.current = new Phaser.Game({
-      width: '100%',
-      height: '100%',
+      width: 1024,
+      height: 640,
       title: 'Phaser RPG',
-      scene: [
-        scenes.Boot,
-        ...Object.values(scenes).filter((scene) => scene !== scenes.Boot),
-      ],
+      scene: [scenes.Boot, scenes.Main, scenes.Menu],
       physics: {
         default: 'arcade',
       },
@@ -41,5 +38,5 @@ export const PhaserGame: React.FC = () => {
     };
   }, []);
 
-  return <div id='phaser-game' className='h-screen border' />;
+  return <div className='absolute top-0' id='phaser-game' />;
 };

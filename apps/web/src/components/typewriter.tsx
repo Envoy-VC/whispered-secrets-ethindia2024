@@ -1,19 +1,17 @@
-/* eslint-disable @eslint-community/eslint-comments/disable-enable-pair -- safe */
-
-/* eslint-disable @typescript-eslint/restrict-plus-operands -- safe  */
-
-/* eslint-disable @typescript-eslint/no-non-null-assertion -- safe  */
 import type Phaser from 'phaser';
 import { Text, createRef, useScene } from 'phaser-jsx';
 
 import { Depth } from '../constants';
 
-interface TypewriterProps {
+interface Props {
   text: string;
   onEnd?: () => void;
 }
 
-export const Typewriter = (props: TypewriterProps) => {
+/**
+ * Textbox that has a "fixed" position on the screen.
+ */
+export const Typewriter = (props: Props) => {
   const scene = useScene();
   const ref = createRef<Phaser.GameObjects.Text>();
   let index = 0;
@@ -42,11 +40,6 @@ export const Typewriter = (props: TypewriterProps) => {
 
   return (
     <Text
-      ref={ref}
-      alpha={0.95}
-      depth={Depth.AboveWorld}
-      scrollFactorX={0}
-      scrollFactorY={0}
       x={16}
       y={16}
       style={{
@@ -54,9 +47,14 @@ export const Typewriter = (props: TypewriterProps) => {
         fontFamily: 'monospace',
         fontSize: '18px',
         backgroundColor: '#fff',
-        // @ts-expect-error padding  is not in the type
+        // @ts-expect-error padding --
         padding: { x: 20, y: 10 },
       }}
+      alpha={0.95}
+      scrollFactorX={0}
+      scrollFactorY={0}
+      depth={Depth.AboveWorld}
+      ref={ref}
     />
   );
 };

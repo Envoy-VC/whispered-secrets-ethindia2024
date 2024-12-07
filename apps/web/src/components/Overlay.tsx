@@ -1,6 +1,6 @@
 import { Rectangle, useScene } from 'phaser-jsx';
 
-export function Overlay() {
+export const Overlay = () => {
   const scene = useScene();
   const { width, height } = scene.cameras.main;
 
@@ -14,4 +14,4 @@ export function Overlay() {
       scrollFactorY={0}
     />
   );
-}
+};

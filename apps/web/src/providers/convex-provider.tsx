@@ -3,9 +3,10 @@
 import { type ReactNode } from 'react';
 
 import { ConvexProvider, ConvexReactClient } from 'convex/react';
-import { env } from '~/env';
 
-const convex = new ConvexReactClient(env.NEXT_PUBLIC_CONVEX_URL);
+const env = import.meta.env;
+
+const convex = new ConvexReactClient(env.VITE_CONVEX_URL);
 
 export const ConvexClientProvider = ({ children }: { children: ReactNode }) => {
   return <ConvexProvider client={convex}>{children}</ConvexProvider>;

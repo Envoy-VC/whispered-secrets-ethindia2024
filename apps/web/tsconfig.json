@@ -2,28 +2,17 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "@envoy1084/style-guide/typescript/node20",
   "compilerOptions": {
-    /* Base Options: */
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "target": "es2022",
     "allowJs": true,
     "resolveJsonModule": true,
-    "moduleDetection": "force",
     "isolatedModules": true,
-
-    /* Strictness */
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "checkJs": true,
-
-    /* Bundled projects */
-    "lib": ["dom", "dom.iterable", "ES2022"],
+    "lib": ["dom", "dom.iterable", "ES2022", "ES2023"],
     "noEmit": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "jsx": "preserve",
-    "plugins": [{ "name": "next" }],
-    "incremental": true,
 
     /* Path Aliases */
     "baseUrl": ".",
@@ -31,15 +20,7 @@
       "~/*": ["./src/*"]
     }
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.cjs",
-    ".next/types/**/*.ts",
-    "src/env.js",
-    "**/*.js",
-    "prettier.config.mjs"
-  ],
-  "exclude": ["node_modules", "**/*.mjs", "**/*.js"]
+  "include": ["**/*.ts", "**/*.tsx"],
+
+  "exclude": ["node_modules", "**/*.js", "**/*.mjs"]
 }

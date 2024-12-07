@@ -1,6 +1,3 @@
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-
 import { useState } from 'react';
 
 import {
@@ -19,6 +16,7 @@ import {
   DialogHeader,
   DialogTrigger,
 } from '@repo/ui/ui/dialog';
+import { useNavigate } from '@tanstack/react-router';
 import { useMutation } from 'convex/react';
 import retry from 'p-retry';
 import BulletLogo from 'public/bullet.png';
@@ -58,7 +56,7 @@ const NewGame = () => {
   const mutate = useMutation(api.games.createGame);
   const mutateJoin = useMutation(api.games.joinGame);
 
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const { address } = useAccount();
 
@@ -176,6 +174,7 @@ const NewGame = () => {
         killer: killerIdWithId,
         murderWeapon,
         murderLocation,
+        roomId: '',
       });
 
       const res2 = await mutateJoin({
@@ -184,6 +183,13 @@ const NewGame = () => {
       });
 
       console.log(res, res2);
+
+      await navigate({
+        to: '/game/$gameId',
+        params: {
+          gameId: res,
+        },
+      });
 
       router.push(`/games/${res}`);
     } catch (error) {
@@ -202,7 +208,7 @@ const NewGame = () => {
           onMouseLeave={() => setHovered(false)}
         >
           <div className='w-full rounded p-2 text-2xl font-medium text-neutral-400 transition-all duration-300 ease-in-out group-hover:-translate-x-2 group-hover:scale-[104%] group-hover:text-neutral-200'>
-            <Image
+            <img
               alt='Bullet Logo'
               height={32}
               src={BulletLogo}
