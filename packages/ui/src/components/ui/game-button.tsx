@@ -11,7 +11,7 @@ export const GameButton = (props: {
   imgUrl?: string;
   onClick?: MouseEventHandler;
   title?: string;
-  children: ReactNode;
+  children?: ReactNode;
 }) => {
   return (
     <a

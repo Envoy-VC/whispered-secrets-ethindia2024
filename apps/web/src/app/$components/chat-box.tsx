@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { cn } from '~/lib/utils';
 
+import { GameButton } from '@repo/ui/components/ui/game-button';
 import {
   Sheet,
   SheetContent,
@@ -84,27 +85,56 @@ const ChatContainer = ({
   });
 
   const mutation = useMutation(api.chat.sendChat);
+
+  const onSend = async () => {
+    await mutation({
+      gameId: gameId as Id<'games'>,
+      playerId,
+      npcId,
+      message,
+    });
+    setMessage('');
+  };
   return (
-    <div className='flex flex-col gap-2'>
-      {messages?.map((m) => {
-        return <div key={m._id}>{m.content}</div>;
-      })}
+    <div className='hide-scrollbar flex h-[80dvh] flex-col justify-between gap-2 overflow-y-scroll'>
+      <div className='flex w-full flex-col gap-2 px-4'>
+        {messages?.map((m) => {
+          return (
+            <div
+              key={m._id}
+              className={cn(
+                'flex',
+                m.npc_id === npcId ? 'justify-start' : 'justify-end'
+              )}
+            >
+              <div
+                className={cn(
+                  'w-fit rounded-lg bg-[#3A4466] p-2 font-mono',
+                  m.npc_id === npcId ? 'text-[#8B9BB4]' : 'text-black'
+                )}
+              >
+                {m.content}
+              </div>
+            </div>
+          );
+        })}
+      </div>
       <div className='flex flex-row gap-2'>
-        <input value={message} onChange={(e) => setMessage(e.target.value)} />
-        <button
-          type='button'
-          onClick={async () => {
-            console.log('sending');
-            await mutation({
-              gameId: gameId as Id<'games'>,
-              playerId,
-              npcId,
-              message,
-            });
+        <input
+          className='w-full rounded-2xl bg-[#3A4466] p-3 font-mono outline-none'
+          placeholder='Type your message here'
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              void onSend();
+            }
           }}
-        >
-          Send
-        </button>
+        />
+        <div className='flex flex-row items-center gap-2'>
+          <GameButton onClick={onSend}>Send</GameButton>
+          <GameButton>Invoke</GameButton>
+        </div>
       </div>
     </div>
   );
