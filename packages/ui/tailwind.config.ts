@@ -24,6 +24,13 @@ export default {
           800: '#3F2832',
           900: '#181425',
         },
+        clay: {
+          100: '#C0CBDC',
+          300: '#8B9BB4',
+          500: '#5A6988',
+          700: '#3A4466',
+          900: '#181425',
+        },
         background: 'var(--background)',
         foreground: 'var(--foreground)',
         card: {

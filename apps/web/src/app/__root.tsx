@@ -5,7 +5,8 @@ import {
   HuddleProvider,
   Web3Provider,
 } from '~/providers';
-import '~/styles/globals.css';
+
+import '../styles/globals.css';
 
 const RootComponent = () => {
   return (

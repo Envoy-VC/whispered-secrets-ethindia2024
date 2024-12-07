@@ -1,12 +1,27 @@
-import { createFileRoute } from '@tanstack/react-router';
-
-import { PhaserGame } from './$components/game';
+import { createFileRoute, useParams } from '@tanstack/react-router';
+import { Game } from '~/game/map';
 
 const GameComponent = () => {
+  const { gameId } = useParams({
+    from: '/game/$gameId',
+  });
   return (
-    <div className='absolute top-0'>
-      <PhaserGame />
-    </div>
+    <Game
+      me={{
+        playerName: 'Vedant',
+      }}
+      others={[
+        {
+          playerName: 'Raj',
+        },
+        {
+          playerName: 'Raushan',
+        },
+        {
+          playerName: 'Dishank',
+        },
+      ]}
+    />
   );
 };
 

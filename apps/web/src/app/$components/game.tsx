@@ -18,7 +18,16 @@ export const PhaserGame: React.FC = () => {
       width: 1024,
       height: 640,
       title: 'Phaser RPG',
-      scene: [scenes.Boot, scenes.Main, scenes.Menu],
+      scene: [
+        scenes.Boot,
+        new scenes.Main([
+          {
+            x: 1,
+            y: 4,
+          },
+        ]),
+        scenes.Menu,
+      ],
       physics: {
         default: 'arcade',
       },

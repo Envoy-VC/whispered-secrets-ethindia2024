@@ -39,7 +39,7 @@ const schema = defineSchema(
           content: v.string(),
         })
       ),
-    }).index('id', ['id', 'game_id']),
+    }).index('id', ['id', 'game_id', 'players']),
   },
   { strictTableNameTypes: true, schemaValidation: true }
 );
