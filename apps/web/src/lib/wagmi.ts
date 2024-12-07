@@ -1,15 +1,29 @@
 import { getDefaultConfig } from 'connectkit';
+import { defineChain } from 'viem';
 import { createConfig, http } from 'wagmi';
 import { baseSepolia } from 'wagmi/chains';
 import { coinbaseWallet } from 'wagmi/connectors';
 
 const env = import.meta.env;
 
+export const supraTestnet = defineChain({
+  id: 231,
+  name: 'Stagingnet Testnet',
+  nativeCurrency: { name: 'Stagingnet', symbol: 'ETH', decimals: 18 },
+  rpcUrls: {
+    default: {
+      http: ['https://rpc-evmstaging.supra.com/rpc/v1/eth'],
+    },
+  },
+  testnet: true,
+});
+
 export const config = createConfig(
   getDefaultConfig({
-    chains: [baseSepolia],
+    chains: [baseSepolia, supraTestnet],
     transports: {
       [baseSepolia.id]: http(),
+      [supraTestnet.id]: http(),
     },
     connectors: [
       coinbaseWallet({
@@ -87,4 +101,17 @@ const abi = [
 export const whisperedConfig = {
   address: '0x9482e4c7927ba4e1AcB319321FC6b23E18FDf49C' as `0x${string}`,
   abi,
+};
+
+const getConfig = (chainId: number) => {
+  if (chainId === 231) {
+    return {
+      address: '0x9482e4c7927ba4e1AcB319321FC6b23E18FDf49C' as `0x${string}`,
+      abi,
+    };
+  }
+  return {
+    address: '0x9482e4c7927ba4e1AcB319321FC6b23E18FDf49C' as `0x${string}`,
+    abi,
+  };
 };

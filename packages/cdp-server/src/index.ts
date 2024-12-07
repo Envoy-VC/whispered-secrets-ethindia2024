@@ -46,6 +46,50 @@ app.post("/invoke-agent", async (c) => {
   }
 });
 
+app.post("/create-huddle-room", async (c) => {
+  const { title, hostWallets } = (await c.req.json()) as {
+    title: string;
+    hostWallets: string[];
+  };
+
+  const response = await fetch(
+    "https://api.huddle01.com/api/v2/sdk/rooms/create-room",
+    {
+      method: "POST",
+      body: JSON.stringify({
+        title,
+        hostWallets,
+      }),
+      // @ts-expect-error safe to ignore
+      headers: {
+        "Content-type": "application/json",
+        "x-api-key": process.env.HUDDLE_API_KEY,
+      },
+    },
+  );
+
+  const data = (await response.json()) as
+    | {
+        message: string;
+        data: { roomId: string };
+      }
+    | {
+        success: false;
+      };
+
+  if ("success" in data) {
+    return c.json({
+      status: "error",
+      message: data,
+    });
+  } else {
+    return c.json({
+      status: "success",
+      message: data.data.roomId,
+    });
+  }
+});
+
 export default {
   port: 8787,
   fetch: app.fetch,

@@ -14,4 +14,4 @@ fs_permissions = [{ access = "read-write", path = "../" }]
 sepolia = "https://endpoints.omniatech.io/v1/eth/sepolia/public"
 
 [etherscan]
-base-sepolia = { key = "${SEPOLIA_ETHERSCAN_API_KEY}", chain = 84532 }
+sepolia = { key = "${SEPOLIA_ETHERSCAN_API_KEY}", chain = 11155111 }

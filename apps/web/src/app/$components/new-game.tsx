@@ -6,6 +6,7 @@ import {
   generatePlayers,
   generatePlot,
 } from '~/lib/ai';
+import { createRoom } from '~/lib/huddle';
 import { cn } from '~/lib/utils';
 
 import { GameButton } from '@repo/ui/components/ui/game-button';
@@ -168,6 +169,8 @@ const NewGame = () => {
         npc_id: killerId,
       };
 
+      const roomId = await createRoom(id.rnd(), address);
+
       const res = await mutate({
         address,
         details: {
@@ -177,7 +180,7 @@ const NewGame = () => {
           killer: killerIdWithId,
           murderWeapon,
           murderLocation,
-          room_id: '', // TODO:
+          room_id: roomId,
         },
       });
 
