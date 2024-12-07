@@ -8,6 +8,8 @@ export const env = createEnv({
   server: {
     NODE_ENV: z.enum(['development', 'test', 'production']),
     HUDDLE_API_KEY: z.string(),
+    CDP_API_KEY_NAME: z.string(),
+    CDP_API_KEY_PRIVATE_KEY: z.string(),
   },
   client: {
     NEXT_PUBLIC_CONVEX_URL: z.string(),

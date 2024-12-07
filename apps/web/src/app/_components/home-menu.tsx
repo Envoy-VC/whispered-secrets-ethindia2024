@@ -1,3 +1,7 @@
+'use client';
+
+import Image from 'next/image';
+
 import { useState } from 'react';
 
 import { cn } from '@repo/ui/lib/utils';
@@ -43,7 +47,7 @@ export const HomeMenu = () => {
             onMouseLeave={() => setHovered(null)}
           >
             <div className='w-full rounded p-2 text-2xl font-medium text-neutral-400 transition-all duration-300 ease-in-out group-hover:-translate-x-2 group-hover:scale-[104%] group-hover:text-neutral-200'>
-              <img
+              <Image
                 alt='Bullet Logo'
                 height={32}
                 src={BulletLogo}

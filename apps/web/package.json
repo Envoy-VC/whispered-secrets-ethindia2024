@@ -16,8 +16,13 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@coinbase/cdp-agentkit-core": "^0.0.7",
+    "@coinbase/cdp-langchain": "^0.0.8",
     "@huddle01/react": "^2.2.4",
-    "@repo/ui": "workspace:*",
+    "@langchain/langgraph": "^0.2.27",
+    "@langchain/ollama": "^0.1.2",
+    "@langchain/openai": "^0.3.14",
+    "@repo/ui": "workspace:^",
     "@t3-oss/env-nextjs": "^0.10.1",
     "@tanstack/react-query": "^5.61.4",
     "@trpc/client": "^11.0.0-rc.446",
