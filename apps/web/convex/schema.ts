@@ -1,20 +1,36 @@
 import { defineSchema, defineTable } from 'convex/server';
 import { v } from 'convex/values';
 
-export const playerDetails = v.object({
+export const npcDetails = v.object({
   id: v.string(),
-  playerName: v.string(),
-  identity: v.optional(v.string()),
-  plan: v.optional(v.string()),
-  relationWithVictim: v.optional(v.string()),
+  npcName: v.string(),
+  npcIdentity: v.optional(v.string()),
+  npcPlan: v.optional(v.string()),
+  npcRelationWithVictim: v.optional(v.string()),
+});
+
+export const gamePlayerDetails = v.object({
+  player_id: v.id('users'),
+  npc_id: v.string(),
+});
+
+export const killerDetails = v.object({
+  npc_id: v.string(),
 });
 
 export const gameDetails = v.object({
   plot: v.string(),
-  players: v.array(playerDetails),
-  killer: playerDetails,
+  players: v.array(gamePlayerDetails),
+  npcs: v.array(npcDetails),
+  killer: killerDetails,
   murderWeapon: v.string(),
   murderLocation: v.string(),
+  room_id: v.string(),
+});
+
+export const conversationDetails = v.object({
+  game_id: v.id('games'),
+  npcs: v.array(v.string()),
 });
 
 const schema = defineSchema(
@@ -23,23 +39,17 @@ const schema = defineSchema(
       address: v.string(),
     }).index('address', ['address']),
     games: defineTable({
-      id: v.string(),
-      players: v.array(v.id('users')),
       details: gameDetails,
-      room_id: v.string(),
-    }).index('id', ['id']),
+    }),
     conversations: defineTable({
-      id: v.string(),
       game_id: v.id('games'),
-      players: v.array(v.id('users')),
-      messages: v.array(
-        v.object({
-          id: v.string(),
-          from: v.string(),
-          content: v.string(),
-        })
-      ),
-    }).index('id', ['id', 'game_id', 'players']),
+      npcs: v.array(v.string()),
+    }).index('id', ['game_id']),
+    messages: defineTable({
+      conversation_id: v.id('conversations'),
+      npc_id: v.string(),
+      content: v.string(),
+    }).index('conversation_id', ['conversation_id', 'npc_id']),
   },
   { strictTableNameTypes: true, schemaValidation: true }
 );

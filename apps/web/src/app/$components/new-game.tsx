@@ -54,7 +54,6 @@ const NewGame = () => {
   const [murderLocation, setMurderLocation] = useState<string | null>(null);
 
   const mutate = useMutation(api.games.createGame);
-  const mutateJoin = useMutation(api.games.joinGame);
 
   const navigate = useNavigate();
 
@@ -149,14 +148,16 @@ const NewGame = () => {
 
     try {
       const id = new ShortUniqueId({ length: 10 });
-
-      const playersWithId = players.map((player) => ({
-        ...player,
+      const npcsWithId = players.map((p) => ({
         id: id.rnd(),
+        npcName: p.playerName,
+        npcIdentity: p.identity,
+        npcPlan: p.plan,
+        npcRelationWithVictim: p.relationWithVictim,
       }));
 
-      const killerId = playersWithId.find(
-        (p) => p.playerName === killer.playerName
+      const killerId = npcsWithId.find(
+        (p) => p.npcName === killer.playerName
       )?.id;
 
       if (!killerId) {
@@ -164,25 +165,23 @@ const NewGame = () => {
       }
 
       const killerIdWithId = {
-        ...killer,
-        id: killerId,
+        npc_id: killerId,
       };
 
       const res = await mutate({
-        players: playersWithId,
-        plot,
-        killer: killerIdWithId,
-        murderWeapon,
-        murderLocation,
-        roomId: '',
-      });
-
-      const res2 = await mutateJoin({
         address,
-        gameId: res,
+        details: {
+          npcs: npcsWithId,
+          players: [],
+          plot,
+          killer: killerIdWithId,
+          murderWeapon,
+          murderLocation,
+          room_id: '', // TODO:
+        },
       });
 
-      console.log(res, res2);
+      console.log(res);
 
       await navigate({
         to: '/game/$gameId',
@@ -191,7 +190,10 @@ const NewGame = () => {
         },
       });
 
-      router.push(`/games/${res}`);
+      await navigate({
+        to: '/game/$gameId',
+        params: { gameId: res },
+      });
     } catch (error) {
       console.error(error);
     }

@@ -1,6 +1,6 @@
 import { v } from 'convex/values';
 
-import { mutation } from './_generated/server';
+import { mutation, query } from './_generated/server';
 
 export const getOrCreateUser = mutation({
   args: {
@@ -19,6 +19,20 @@ export const getOrCreateUser = mutation({
 
       return taskId;
     }
-    return user[0];
+    return user[0]._id;
+  },
+});
+
+export const getUser = query({
+  args: {
+    address: v.string(),
+  },
+  handler: async (ctx, { address }) => {
+    const user = await ctx.db
+      .query('users')
+      .filter((q) => q.eq(q.field('address'), address))
+      .collect();
+
+    return user[0]?._id;
   },
 });

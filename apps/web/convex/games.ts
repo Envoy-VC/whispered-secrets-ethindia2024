@@ -1,39 +1,37 @@
 import { v } from 'convex/values';
-import ShortUniqueId from 'short-unique-id';
 
 import type { Id } from './_generated/dataModel';
-import { mutation } from './_generated/server';
-import { playerDetails } from './schema';
+import { mutation, query } from './_generated/server';
+import { gameDetails } from './schema';
+import { getOrCreateUser } from './users';
 
 export const createGame = mutation({
-  args: {
-    plot: v.string(),
-    players: v.array(playerDetails),
-    killer: playerDetails,
-    murderWeapon: v.string(),
-    murderLocation: v.string(),
-    roomId: v.string(),
-  },
-  handler: async (
-    ctx,
-    { players, plot, killer, murderWeapon, murderLocation, roomId }
-  ) => {
-    const uid = new ShortUniqueId({ length: 10 });
-    const id = uid.rnd();
-    const taskId = await ctx.db.insert('games', {
-      id,
-      players: [],
+  args: v.object({
+    details: gameDetails,
+    address: v.string(),
+  }),
+  handler: async (ctx, args) => {
+    const details = args.details;
+    const userId = await getOrCreateUser(ctx, { address: args.address });
+    const gameId = await ctx.db.insert('games', {
       details: {
-        plot,
-        players,
-        killer,
-        murderWeapon,
-        murderLocation,
-        room_id: roomId,
+        plot: details.plot,
+        players: [
+          {
+            player_id: userId,
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- should be defined
+            npc_id: details.npcs[0]!.id,
+          },
+        ],
+        npcs: details.npcs,
+        killer: details.killer,
+        murderWeapon: details.murderWeapon,
+        murderLocation: details.murderLocation,
+        room_id: details.room_id,
       },
     });
 
-    return taskId;
+    return gameId;
   },
 });
 
@@ -49,31 +47,43 @@ export const joinGame = mutation({
       throw new Error('Game not found');
     }
 
-    const player = await ctx.db
-      .query('users')
-      .filter((q) => q.eq(q.field('address'), address))
-      .collect();
+    if (game.details.npcs.length === game.details.players.length) {
+      throw new Error('Game Full');
+    }
 
-    let playerId: Id<'users'>;
-    if (player[0]) {
-      playerId = player[0]._id;
+    const userId = await getOrCreateUser(ctx, { address });
+
+    const newPlayers = game.details.players;
+    if (newPlayers.some((p) => p.player_id === userId)) {
+      throw new Error('Already in game');
     } else {
-      const id = await ctx.db.insert('users', {
-        address,
+      newPlayers.push({
+        player_id: userId,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- should be defined
+        npc_id: game.details.npcs[game.details.players.length]!.id,
       });
-      playerId = id;
     }
 
-    const newPlayers = game.players;
-    if (!newPlayers.includes(playerId)) {
-      newPlayers.push(playerId);
-    }
-
-    const taskId = ctx.db.patch(gameId, {
+    const res = ctx.db.patch(gameId, {
       ...game,
-      players: newPlayers,
+      details: {
+        ...game.details,
+        players: newPlayers,
+      },
     });
 
-    return taskId;
+    return res;
+  },
+});
+
+export const getGame = query({
+  handler: async (
+    ctx,
+    args: {
+      gameId: Id<'games'>;
+    }
+  ) => {
+    const game = await ctx.db.get(args.gameId);
+    return game;
   },
 });

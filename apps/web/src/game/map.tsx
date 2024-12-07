@@ -2,16 +2,18 @@
 
 import { useEffect, useRef } from 'react';
 
-import type { PlayerType } from '~/lib/ai';
-
+import type { Infer } from 'convex/values';
 import { Direction } from 'grid-engine';
 import Phaser from 'phaser';
 
+import type { npcDetails } from '../../convex/schema';
 import { type PhaserWithGridEngine, config } from './config';
 
+type NPC = Infer<typeof npcDetails>;
+
 interface GameProps {
-  me: PlayerType;
-  others: PlayerType[];
+  me: NPC;
+  others: NPC[];
 }
 
 export const Game = ({ me, others }: GameProps) => {
@@ -53,7 +55,7 @@ export const Game = ({ me, others }: GameProps) => {
       const playerSprite = this.add.sprite(0, 0, 'player');
       playerSprite.scale = 1.5;
 
-      const text = this.add.text(0, -10, me.playerName);
+      const text = this.add.text(0, -10, me.npcName);
       text.setColor('#000000');
       const container = this.add.container(0, 0, [playerSprite, text]);
       this.cameras.main.startFollow(container, true);
@@ -123,7 +125,7 @@ export const Game = ({ me, others }: GameProps) => {
     return () => {
       game.destroy(true);
     };
-  }, [me.playerName, others]);
+  }, [me.npcName, others]);
 
   return <div ref={gameContainerRef} className='h-screen w-full' />;
 };
