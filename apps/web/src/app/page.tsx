@@ -1,17 +1,18 @@
-import { createFileRoute } from '@tanstack/react-router';
+import Image from 'next/image';
+
 import BackgroundImage from 'public/background.jpg';
 import LogoText from 'public/logo-text.svg';
 
-import { ConnectButton, HomeMenu } from './$components';
+import { ConnectButton, HomeMenu } from './_components';
 
-const HomeComponent = () => {
+const Home = () => {
   return (
     <div className='relative'>
       <div className='absolute top-8 right-8 z-[3]'>
         <ConnectButton />
       </div>
       <div className='absolute top-0 right-0 z-[2] flex h-screen w-full max-w-md flex-col items-start justify-evenly'>
-        <img
+        <Image
           alt='Logo Text'
           className='w-84'
           height={100}
@@ -20,7 +21,7 @@ const HomeComponent = () => {
         />
         <HomeMenu />
       </div>
-      <img
+      <Image
         alt='Background'
         className='z-[-1] h-screen w-full'
         height={1080}
@@ -31,6 +32,4 @@ const HomeComponent = () => {
   );
 };
 
-export const Route = createFileRoute('/')({
-  component: HomeComponent,
-});
+export default Home;

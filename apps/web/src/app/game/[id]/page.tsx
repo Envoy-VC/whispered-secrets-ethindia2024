@@ -1,7 +1,6 @@
-import { createFileRoute } from '@tanstack/react-router';
 import { useElementSize } from '~/hooks';
 
-const GameComponent = () => {
+export const GamePage = () => {
   const [gameWrapperRef, { width, height }] = useElementSize();
 
   return (
@@ -15,7 +14,3 @@ const GameComponent = () => {
     </div>
   );
 };
-
-export const Route = createFileRoute('/games/$gameId')({
-  component: GameComponent,
-});

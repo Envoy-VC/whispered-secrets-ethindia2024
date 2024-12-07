@@ -2,8 +2,7 @@ import { getDefaultConfig } from 'connectkit';
 import { createConfig, http } from 'wagmi';
 import { baseSepolia } from 'wagmi/chains';
 import { coinbaseWallet } from 'wagmi/connectors';
-
-const env = import.meta.env;
+import { env } from '~/env';
 
 export const config = createConfig(
   getDefaultConfig({
@@ -18,7 +17,7 @@ export const config = createConfig(
       }),
     ],
 
-    walletConnectProjectId: env.VITE_WALLETCONNECT_PROJECT_ID,
+    walletConnectProjectId: env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
     appName: 'Your App Name',
     multiInjectedProviderDiscovery: false,
     appDescription: 'Your App Description',
