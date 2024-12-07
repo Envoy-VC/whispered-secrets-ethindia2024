@@ -32,24 +32,9 @@ importers:
 
   apps/web:
     dependencies:
-      '@coinbase/cdp-agentkit-core':
-        specifier: ^0.0.7
-        version: 0.0.7(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@5.0.10)
-      '@coinbase/cdp-langchain':
-        specifier: ^0.0.8
-        version: 0.0.8(@coinbase/coinbase-sdk@0.11.2(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8))(bufferutil@4.0.8)(openai@4.76.0(zod@3.23.8))(typescript@5.6.3)(utf-8-validate@5.0.10)
       '@huddle01/react':
         specifier: ^2.2.4
         version: 2.2.4(@testing-library/dom@10.4.0)(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))
-      '@langchain/langgraph':
-        specifier: ^0.2.27
-        version: 0.2.27(@langchain/core@0.3.22(openai@4.76.0(zod@3.23.8)))
-      '@langchain/ollama':
-        specifier: ^0.1.2
-        version: 0.1.2(@langchain/core@0.3.22(openai@4.76.0(zod@3.23.8)))
-      '@langchain/openai':
-        specifier: ^0.3.14
-        version: 0.3.14(@langchain/core@0.3.22(openai@4.76.0(zod@3.23.8)))
       '@repo/ui':
         specifier: workspace:^
         version: link:../../packages/ui
@@ -87,11 +72,17 @@ importers:
         specifier: ^14
         version: 14.2.20(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       ollama-ai-provider:
-        specifier: ^1.0.0
-        version: 1.0.0(zod@3.23.8)
+        specifier: ^1.1.0
+        version: 1.1.0(zod@3.23.8)
       p-retry:
         specifier: ^6.2.1
         version: 6.2.1
+      phaser:
+        specifier: 3.87.0
+        version: 3.87.0
+      phaser-jsx:
+        specifier: 0.11.0
+        version: 0.11.0(@types/react@18.3.12)(phaser@3.87.0)
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -4843,8 +4834,8 @@ packages:
   ohash@1.1.4:
     resolution: {integrity: sha512-FlDryZAahJmEF3VR3w1KogSEdWX3WhA5GPakFx4J81kEAiHyLMpdLLElS8n8dfNadMgAne/MywcvmogzscVt4g==}
 
-  ollama-ai-provider@1.0.0:
-    resolution: {integrity: sha512-72FhNSjS/yav+w1jGX7K/VX0Psv9C0TA1aXk6K2sEloz542AJCYqHIUu8Jt0TWhoB98L9pBZwV8Vr89eBavyzg==}
+  ollama-ai-provider@1.1.0:
+    resolution: {integrity: sha512-kpNLX2I0qVZfyML/d+o3UZrJxUokWeLrrQeuAQOuYPKmZcN9bpU7PD7SuxsH86krWvXqM0SJygTPa0OwEK71OQ==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.0.0
@@ -4991,6 +4982,18 @@ packages:
   pathval@2.0.0:
     resolution: {integrity: sha512-vE7JKRyES09KiunauX7nd2Q9/L7lhok4smP9RZTDeD4MVs72Dp2qNFVz39Nz5a0FVEW0BJR6C0DYrq6unoziZA==}
     engines: {node: '>= 14.16'}
+
+  phaser-jsx@0.11.0:
+    resolution: {integrity: sha512-pvoy3cMJe1eY7T+2VYsb9VzZoFZNo22yTYjBsPr/8t5uyw2osmhqjLBefuFam47q6arOYk8n1lGc35B8nUAfmg==}
+    peerDependencies:
+      '@types/react': 17 || 18 || 19
+      phaser: '3'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
+  phaser@3.87.0:
+    resolution: {integrity: sha512-AyI1b3T5fp05gzf6WUmu2FNqaZL+Y7w88yBRLf7YZXF9bncUSHpnDrupnTGoPqy/RKHRLBcay7zWeqQ2wiMWcw==}
 
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
@@ -11508,7 +11511,7 @@ snapshots:
 
   ohash@1.1.4: {}
 
-  ollama-ai-provider@1.0.0(zod@3.23.8):
+  ollama-ai-provider@1.1.0(zod@3.23.8):
     dependencies:
       '@ai-sdk/provider': 1.0.1
       '@ai-sdk/provider-utils': 2.0.3(zod@3.23.8)
@@ -11658,6 +11661,16 @@ snapshots:
   pathe@1.1.2: {}
 
   pathval@2.0.0: {}
+
+  phaser-jsx@0.11.0(@types/react@18.3.12)(phaser@3.87.0):
+    dependencies:
+      phaser: 3.87.0
+    optionalDependencies:
+      '@types/react': 18.3.12
+
+  phaser@3.87.0:
+    dependencies:
+      eventemitter3: 5.0.1
 
   picocolors@1.1.1: {}
 

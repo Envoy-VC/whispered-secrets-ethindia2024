@@ -12,10 +12,11 @@ export const createGame = mutation({
     killer: playerDetails,
     murderWeapon: v.string(),
     murderLocation: v.string(),
+    roomId: v.string(),
   },
   handler: async (
     ctx,
-    { players, plot, killer, murderWeapon, murderLocation }
+    { players, plot, killer, murderWeapon, murderLocation, roomId }
   ) => {
     const uid = new ShortUniqueId({ length: 10 });
     const id = uid.rnd();
@@ -28,6 +29,7 @@ export const createGame = mutation({
         killer,
         murderWeapon,
         murderLocation,
+        room_id: roomId,
       },
     });
 

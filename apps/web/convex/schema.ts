@@ -26,6 +26,7 @@ const schema = defineSchema(
       id: v.string(),
       players: v.array(v.id('users')),
       details: gameDetails,
+      room_id: v.string(),
     }).index('id', ['id']),
     conversations: defineTable({
       id: v.string(),
