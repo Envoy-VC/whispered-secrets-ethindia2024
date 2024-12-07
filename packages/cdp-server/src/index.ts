@@ -3,7 +3,6 @@ import { Hono } from "hono";
 import { initializeAgent } from "./helpers/initialize";
 import { z } from "zod";
 import { HumanMessage } from "@langchain/core/messages";
-import { serve } from "bun";
 
 const app = new Hono();
 
