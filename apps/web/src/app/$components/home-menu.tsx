@@ -3,16 +3,10 @@ import { useState } from 'react';
 import { cn } from '@repo/ui/lib/utils';
 import BulletLogo from 'public/bullet.png';
 
+import { JoinGame } from './join-game';
 import NewGame from './new-game';
 
 export const homeMenuItems = [
-  {
-    name: 'Continue Game',
-    key: 'continue-game',
-    action: () => {
-      return true;
-    },
-  },
   {
     name: 'Options',
     key: 'options',
@@ -37,6 +31,7 @@ export const HomeMenu = () => {
   return (
     <div className='flex w-full max-w-xs flex-col items-end gap-3'>
       <NewGame />
+      <JoinGame />
       {homeMenuItems.map((item) => {
         return (
           <button

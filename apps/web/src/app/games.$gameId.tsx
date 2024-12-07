@@ -16,6 +16,6 @@ const GameComponent = () => {
   );
 };
 
-export const Route = createFileRoute('/game')({
+export const Route = createFileRoute('/games/$gameId')({
   component: GameComponent,
 });

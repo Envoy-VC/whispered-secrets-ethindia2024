@@ -16,9 +16,12 @@ import {
   DialogHeader,
   DialogTrigger,
 } from '@repo/ui/ui/dialog';
+import { useNavigate } from '@tanstack/react-router';
 import { useMutation } from 'convex/react';
 import retry from 'p-retry';
 import BulletLogo from 'public/bullet.png';
+import ShortUniqueId from 'short-unique-id';
+import { useAccount } from 'wagmi';
 
 import { api } from '../../../convex/_generated/api';
 
@@ -51,6 +54,11 @@ const NewGame = () => {
   const [murderLocation, setMurderLocation] = useState<string | null>(null);
 
   const mutate = useMutation(api.games.createGame);
+  const mutateJoin = useMutation(api.games.joinGame);
+
+  const navigate = useNavigate();
+
+  const { address } = useAccount();
 
   const onOpenChange = (open: boolean) => {
     setOpen(open);
@@ -86,7 +94,9 @@ const NewGame = () => {
         return { players };
       };
 
-      const { players } = await retry(genPlayers, { retries: 3 });
+      const { players } = await retry(genPlayers, {
+        retries: 3,
+      });
 
       const genClues = async () => {
         setStatus('generating-clues');
@@ -125,6 +135,8 @@ const NewGame = () => {
       return;
     }
 
+    if (!address) return;
+
     if (
       !players.length ||
       !plot ||
@@ -136,15 +148,47 @@ const NewGame = () => {
     }
 
     try {
+      const id = new ShortUniqueId({ length: 10 });
+
+      const playersWithId = players.map((player) => ({
+        ...player,
+        id: id.rnd(),
+      }));
+
+      const killerId = playersWithId.find(
+        (p) => p.playerName === killer.playerName
+      )?.id;
+
+      if (!killerId) {
+        throw new Error('Killer not found');
+      }
+
+      const killerIdWithId = {
+        ...killer,
+        id: killerId,
+      };
+
       const res = await mutate({
-        players,
+        players: playersWithId,
         plot,
-        killer,
+        killer: killerIdWithId,
         murderWeapon,
         murderLocation,
       });
 
-      console.log(res);
+      const res2 = await mutateJoin({
+        address,
+        gameId: res,
+      });
+
+      console.log(res, res2);
+
+      await navigate({
+        to: '/games/$gameId',
+        params: {
+          gameId: res,
+        },
+      });
     } catch (error) {
       console.error(error);
     }

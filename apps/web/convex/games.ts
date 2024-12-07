@@ -1,6 +1,7 @@
 import { v } from 'convex/values';
 import ShortUniqueId from 'short-unique-id';
 
+import { Id } from './_generated/dataModel';
 import { mutation } from './_generated/server';
 import { playerDetails } from './schema';
 
@@ -51,13 +52,24 @@ export const joinGame = mutation({
       .filter((q) => q.eq(q.field('address'), address))
       .collect();
 
-    if (!player[0]) {
-      throw new Error('Player not found');
+    let playerId: Id<'users'>;
+    if (player[0]) {
+      playerId = player[0]._id;
+    } else {
+      const id = await ctx.db.insert('users', {
+        address,
+      });
+      playerId = id;
+    }
+
+    const newPlayers = game.players;
+    if (!newPlayers.includes(playerId)) {
+      newPlayers.push(playerId);
     }
 
     const taskId = ctx.db.patch(gameId, {
       ...game,
-      players: [...game.players, player[0]._id],
+      players: newPlayers,
     });
 
     return taskId;
