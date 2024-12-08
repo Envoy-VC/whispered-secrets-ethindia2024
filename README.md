@@ -1,11 +1,6 @@
-<p align="center">
-<img src="./assets/logo.svg" alt=""  width="200px"/></p>
+# Whispered Secrets
 
-## Architecture 🏗️
-
-## How it works 🛠️
-
-## Demo Video 🎥
+"Whispered Secrets" is a collaborative murder mystery game where human players and AI agents work together to solve a crime. The game integrates Coinbase's Agent Kit, allowing AI agents powered by LLMs to perform on-chain operations like staking and reward distribution. Players uncover clues, interact with AI-driven characters, and strategize to identify the killer. The project showcases the seamless integration of AI and blockchain in a dynamic, interactive experience.
 
 ## Screenshots 📸
 
@@ -42,19 +37,17 @@
             <img src="./assets/5.png" alt="" >
     </td>
     <td valign="top" width="50%">
-      <br>
-            <img src="./assets/6.png" alt="" >
-    </td>
+
   </tr>
 </table>
 
 ## 🎥 Demo Video
 
-[![Demo Video](https://img.youtube.com/vi/video_id/0.jpg)](https://www.youtube.com/watch?v=video_id)
+[![Demo Video](https://img.youtube.com/vi/Ejbyz9tX_is/0.jpg)](https://www.youtube.com/watch?v=Ejbyz9tX_is)
 
 ## 🧑🏼‍💻 Tech Stack
 
-- **Frontend**: Next.js, Tailwind CSS, `@shadcn/ui`
+- **Frontend**: Next.js, Tailwind CSS, `@shadcn/ui`, `phasor`
 - **Integration**: `wagmi`, `web3modal`
 
 ## Get Started 🚀
