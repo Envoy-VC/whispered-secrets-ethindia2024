@@ -14,11 +14,6 @@ const CallContractInputs = z
     contractAddress: z
       .string()
       .describe("The address of the contract to call. e.g. `0x1234...`"),
-    method: z
-      .string()
-      .describe(
-        "The method to call on the contract. e.g. `transfer(address to, uint256 amount)`",
-      ),
     args: z
       .object({
         gameId: z.string(),
@@ -78,7 +73,7 @@ export async function callContract(
         anonymous: false,
       },
     ],
-    method: args.method,
+    method: "vote",
     args: args.args,
   });
   const tx = await res.broadcast();

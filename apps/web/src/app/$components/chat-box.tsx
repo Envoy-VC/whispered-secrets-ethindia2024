@@ -160,7 +160,7 @@ const ChatContainer = ({
                 console.log(res);
                 if (res.status === 'success') {
                   // eslint-disable-next-line no-alert -- need this
-                  alert('Contract invoked successfully');
+                  alert('User accused successfully');
                 }
               } catch (error: unknown) {
                 console.error(error);
@@ -170,7 +170,7 @@ const ChatContainer = ({
               }
             }}
           >
-            {invoking ? 'Invoking...' : 'Invoke'}
+            {invoking ? 'Accusing...' : 'Accuse'}
           </GameButton>
         </div>
       </div>

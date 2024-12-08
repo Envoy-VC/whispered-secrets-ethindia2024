@@ -35,6 +35,8 @@ app.post("/invoke-agent", async (c) => {
       },
       config,
     );
+
+    console.log(JSON.stringify(res, null, 2));
     return c.json({
       status: "success",
       message: res.messages[0].content,
